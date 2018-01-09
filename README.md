@@ -1,6 +1,5 @@
-# QMLOL: QML Object Notation specification and reference implementation
-
-Sax style parser
+# JSON with classes: Javascript Object Notation with Classes
+Specification and reference implementation of sax style parser
 
 ## Motivation
 
