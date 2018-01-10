@@ -90,6 +90,8 @@ NULL			null
 {FALSE}										{ return TFALSE; }
 {NULL}										{ return TNULL; }
 
+{IDENTIFIER}								{ PARSER->ResetString(); PARSER->StringBuffer.write(yytext, yyleng); return TIDENTIFIER; }
+
 [[:space:]]+								{ /*skip whitespaces*/ }
 .											{ throw jsonwc::Exception("unhandled char"); }
 %%
