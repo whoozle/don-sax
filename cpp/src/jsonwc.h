@@ -2,7 +2,7 @@
 #define JSONWC_H
 
 #include <string>
-#include <exception>
+#include <stdexcept>
 
 #ifndef JSONWC_NUMBER_TYPE
 #	define JSONWC_NUMBER_TYPE double
@@ -55,8 +55,8 @@ namespace jsonwc
 		virtual IValueReceiver * OnProperty(std::string && name) = 0;
 	};
 
-	struct Exception : public std::exception
-	{ using std::exception::exception; };
+	struct Exception : public std::runtime_error
+	{ using std::runtime_error::runtime_error; };
 
 	class Parser
 	{
