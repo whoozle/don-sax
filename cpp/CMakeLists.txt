@@ -26,6 +26,7 @@ add_custom_command(OUTPUT ${JSONWC_GRAMMAR_PATH}/jsonwc.lex.cpp ${JSONWC_GRAMMAR
 
 set (JSONWC_SRC
 	${JSONWC_GRAMMAR_PATH}/jsonwc.lex.cpp
+	src/grammar/jsonwc.parser.cpp
 #	jsonwc.tab.c
 	src/jsonwc.cpp
 )

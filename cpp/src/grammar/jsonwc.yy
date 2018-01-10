@@ -10,10 +10,31 @@
 %option perf-report
 
 %top {
-#include "grammar/jsonwc.parser.h"
+
+/* Token type.  */
+#ifndef YYTOKENTYPE
+#define YYTOKENTYPE
+  enum yytokentype
+  {
+    TNULL = 258,
+    TFALSE = 259,
+    TTRUE = 259,
+    TINTEGER = 260,
+    TNUMBER = 261,
+    TSTRING = 262,
+    TIDENTIFIER = 263,
+    TOBJECTBEGIN = 264,
+    TOBJECTEND = 265,
+    TARRAYBEGIN = 266,
+    TARRAYEND = 267,
+    TSEPARATOR = 268,
+    TCOLON = 269,
+  };
+#endif
 }
 
 %{
+#	include "grammar/jsonwc.parser.h"
 #	define PARSER (static_cast<jsonwc::ParserState*>(yyget_extra(yyscanner)))
 
 #	define YY_INPUT(buf,result,max_size) \
