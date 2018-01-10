@@ -93,5 +93,12 @@ NULL			null
 {IDENTIFIER}								{ PARSER->ResetString(); PARSER->StringBuffer.write(yytext, yyleng); return TIDENTIFIER; }
 
 [[:space:]]+								{ /*skip whitespaces*/ }
+
+:											{ return TCOLON; }
+\{											{ return TOBJECTBEGIN; }
+\}											{ return TOBJECTEND; }
+\[											{ return TARRAYBEGIN; }
+\]											{ return TARRAYEND; }
+[,;]										{ return TSEPARATOR; }
 .											{ throw jsonwc::Exception("unhandled char"); }
 %%
