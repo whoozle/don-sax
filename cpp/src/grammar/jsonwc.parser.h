@@ -6,6 +6,7 @@ namespace jsonwc
 {
 	struct ParserState
 	{
+		IInputStream *		Input;
 		yyscan_t			Lexer;
 
 		union {
@@ -23,9 +24,9 @@ namespace jsonwc
 		std::string GetString()
 		{ return StringBuffer.str(); }
 
-		std::function<size_t (void *, size_t)> Read;
+		int GetNextToken();
 
-		ParserState();
+		ParserState(IInputStream *stream);
 		~ParserState();
 	};
 }

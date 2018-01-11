@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
+option(BUILD_TEST "build test app" BUILD_TEST)
 
 set (JSONWC_GRAMMAR_PATH ${CMAKE_CURRENT_BINARY_DIR}/src/grammar)
 file(MAKE_DIRECTORY ${JSONWC_GRAMMAR_PATH})
@@ -33,3 +34,8 @@ set (JSONWC_SRC
 
 
 add_library(jsonwc STATIC ${JSONWC_SRC})
+
+if (BUILD_TEST)
+	add_executable(jsonwc-test test/test.cpp)
+	target_link_libraries(jsonwc-test jsonwc)
+endif()

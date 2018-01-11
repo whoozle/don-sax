@@ -18,17 +18,17 @@
   {
     TNULL = 258,
     TFALSE = 259,
-    TTRUE = 259,
-    TINTEGER = 260,
-    TNUMBER = 261,
-    TSTRING = 262,
-    TIDENTIFIER = 263,
-    TOBJECTBEGIN = 264,
-    TOBJECTEND = 265,
-    TARRAYBEGIN = 266,
-    TARRAYEND = 267,
-    TSEPARATOR = 268,
-    TCOLON = 269,
+    TTRUE = 260,
+    TINTEGER = 261,
+    TNUMBER = 262,
+    TSTRING = 263,
+    TIDENTIFIER = 264,
+    TOBJECTBEGIN = 265,
+    TOBJECTEND = 266,
+    TARRAYBEGIN = 267,
+    TARRAYEND = 268,
+    TSEPARATOR = 269,
+    TCOLON = 270,
   };
 #endif
 }
@@ -38,7 +38,7 @@
 #	define PARSER (static_cast<jsonwc::ParserState*>(yyget_extra(yyscanner)))
 
 #	define YY_INPUT(buf,result,max_size) \
-      result = PARSER->Read(buf, max_size)
+      result = PARSER->Input->Read(buf, max_size)
 
 static inline char jsonwc_handle_escape(char c) 
 {
@@ -74,7 +74,7 @@ static inline char jsonwc_handle_hex_byte(const char *hex)
 
 %}
 
-%x DQ_STRING SQ_STRING
+%x DQ_STRING SQ_STRING C_COMMENT
 
 IDENTIFIER		[a-zA-Z_$][a-zA-Z0-9_$]*
 INTEGER			[+-]?[[:digit:]]+
@@ -87,6 +87,9 @@ WORD			[[:xdigit:]]{4}
 TRUE			true
 FALSE			false
 NULL			null
+CPP_COMMENT		\/\/
+C_COMMENT_B		\/\*
+C_COMMENT_E		\*\/
 
 %%
 
@@ -121,5 +124,12 @@ NULL			null
 \[											{ return TARRAYBEGIN; }
 \]											{ return TARRAYEND; }
 [,;]										{ return TSEPARATOR; }
+{CPP_COMMENT}.*
+
+{C_COMMENT_B}								{ BEGIN(C_COMMENT); }
+<C_COMMENT>[^*]*
+<C_COMMENT>{C_COMMENT_E}					{ BEGIN(INITIAL); }
+<C_COMMENT>.
+
 .											{ throw jsonwc::Exception("unhandled char"); }
 %%

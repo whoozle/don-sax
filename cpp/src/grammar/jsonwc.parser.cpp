@@ -3,11 +3,14 @@
 
 namespace jsonwc
 {
-	ParserState::ParserState()
+	ParserState::ParserState(IInputStream *stream): Input(stream)
 	{
-		if (jsonwclex_init(&Lexer) != 0)
+		if (jsonwclex_init_extra(this, &Lexer) != 0)
 			throw Exception("jsonwclex_init failed");
 	}
+
+	int ParserState::GetNextToken()
+	{ return jsonwclex(Lexer); }
 
 	ParserState::~ParserState()
 	{

@@ -36,13 +36,18 @@ namespace jsonwc
 		virtual void OnNumber(NumberType value) = 0;
 		virtual void OnString(std::string && value) = 0;
 
-		virtual IJsonArrayReceiver * OnArray() = 0;
-		virtual IJsonObjectReceiver * OnObject() = 0;
+		virtual IJsonArrayReceiver * OnJsonArray() = 0;
+		virtual IJsonObjectReceiver * OnJsonObject() = 0;
+	};
+
+	struct IJsonArrayReceiver : public virtual IReceiver
+	{
+		virtual IJsonValueReceiver * OnArrayValue() = 0;
 	};
 
 	struct IJsonObjectReceiver : public virtual IReceiver
 	{
-		virtual IJsonValueReceiver * OnProperty(std::string && name) = 0;
+		virtual IJsonValueReceiver * OnObjectProperty(std::string && name) = 0;
 	};
 
 	struct IValueReceiver : public virtual IJsonValueReceiver
@@ -52,57 +57,25 @@ namespace jsonwc
 
 	struct IObjectReceiver : public virtual IJsonObjectReceiver
 	{
-		virtual IValueReceiver * OnProperty(std::string && name) = 0;
+		virtual IValueReceiver * OnObjectProperty(std::string && name) = 0;
 	};
 
 	struct Exception : public std::runtime_error
 	{ using std::runtime_error::runtime_error; };
 
+	struct IInputStream
+	{
+		virtual ~IInputStream() { }
+		virtual int Read(void *data, int size) = 0;
+	};
+
+	class ParserState;
 	class Parser
 	{
-		struct IState;
-
-		struct Result
-		{
-			IState *	NewState;
-			size_t		ReadData;
-		};
-
-		struct IState
-		{
-			virtual ~IState() { }
-			virtual Result Feed(const char *data, size_t size) { return Result { this, size }; }
-		};
-
-		template<typename ReceiverType>
-		struct State : public IState
-		{
-			ReceiverType * Receiver;
-
-			State(ReceiverType *recv = nullptr) : Receiver(recv) { }
-		};
-
-		IState * _currentState;
-
-		class StringState : public State<IJsonValueReceiver>
-		{ } _stringState;
-		class IntegerState : public State<IJsonValueReceiver>
-		{ } _integerState;
-		class NumberState : public State<IJsonValueReceiver>
-		{ } _numberState;
-		class JsonObjectState : public State<IJsonObjectReceiver>
-		{
-			using State::State;
-		} _jsonObjectState;
-		class ObjectState : public State<IObjectReceiver>
-		{ } _objectState;
-		class ArrayState : public State<IJsonArrayReceiver>
-		{ } _arrayState;
-
 	public:
-		Parser(IObjectReceiver *root);
-
-		void Feed(const char *data, size_t size);
+	public:
+		Parser(IValueReceiver *root);
+		void Parse(IInputStream &stream);
 	};
 
 
