@@ -38,17 +38,17 @@
 
 %%
 
-elements
-	: elements TSEPARATOR value 	{ }
-	| value							{ }
+array_elements
+	: array_elements TSEPARATOR value		{ }
+	| value									{ }
 	;
 
 array
-	: TARRAYBEGIN TARRAYEND				{ }
-	| TARRAYBEGIN elements TARRAYEND	{ }
+	: TARRAYBEGIN TARRAYEND					{ }
+	| TARRAYBEGIN array_elements TARRAYEND	{ }
 	;
 
-value
+json_value
 	: TNULL					{ }
 	| TFALSE				{ }
 	| TTRUE					{ }
@@ -56,24 +56,44 @@ value
 	| TNUMBER				{ }
 	| TSTRING				{ }
 	| array					{ }
-	| object				{ }
+	| json_object			{ }
 	;
 
-pair
-	: TSTRING TCOLON value	{ }
+value
+	: json_value
+	| object
 	;
 
-members
-	: members TSEPARATOR pair
-	| pair
+object_property
+	: TSTRING TCOLON value			{ }
+	| TIDENTIFIER TCOLON value		{ }
+	;
+
+object_property_list
+	: object_property_list TSEPARATOR object_property
+	| object_property
 	;
 
 object
-	: TOBJECTBEGIN TOBJECTEND				{ }
-	| TOBJECTBEGIN members TOBJECTEND		{ }
+	: TIDENTIFIER TOBJECTBEGIN TOBJECTEND						{ }
+	| TIDENTIFIER TOBJECTBEGIN object_property_list TOBJECTEND	{ }
+	;
+
+json_object_property
+	: TSTRING TCOLON json_value		{ }
+	;
+
+json_property_list
+	: json_property_list TSEPARATOR json_object_property
+	| json_object_property
+	;
+
+json_object
+	: TOBJECTBEGIN TOBJECTEND						{ }
+	| TOBJECTBEGIN json_property_list TOBJECTEND	{ }
 	;
 
 input
-	: value								{ }
+	: value											{ }
 	;
 %%
