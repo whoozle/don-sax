@@ -63,6 +63,14 @@ namespace jsonwc
 	struct Exception : public std::runtime_error
 	{ using std::runtime_error::runtime_error; };
 
+	struct ParserError : public Exception
+	{
+		using Location = std::pair<int, int>;
+		Location Begin, End;
+		ParserError(Location begin, Location end, const std::string &msg) : Exception(msg), Begin(begin), End(end)
+		{ }
+	};
+
 	struct IInputStream
 	{
 		virtual ~IInputStream() { }

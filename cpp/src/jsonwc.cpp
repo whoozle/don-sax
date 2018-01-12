@@ -46,6 +46,9 @@ namespace jsonwc
 	{ }
 
 	void Parser::Parse(IInputStream &stream)
-	{ }
+	{
+		jsonwc::ParserState state(&stream);
+		state.Parse();
+	}
 
 }
