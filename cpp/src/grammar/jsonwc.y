@@ -75,8 +75,9 @@ object_property_list
 	;
 
 object
-	: TIDENTIFIER TOBJECTBEGIN TOBJECTEND						{ }
-	| TIDENTIFIER TOBJECTBEGIN object_property_list TOBJECTEND	{ }
+	: TIDENTIFIER TOBJECTBEGIN TOBJECTEND									{ }
+	| TIDENTIFIER TOBJECTBEGIN object_property_list TOBJECTEND				{ }
+	| TIDENTIFIER TOBJECTBEGIN object_property_list TSEPARATOR TOBJECTEND	{ }
 	;
 
 json_object_property
@@ -89,8 +90,9 @@ json_property_list
 	;
 
 json_object
-	: TOBJECTBEGIN TOBJECTEND						{ }
-	| TOBJECTBEGIN json_property_list TOBJECTEND	{ }
+	: TOBJECTBEGIN TOBJECTEND									{ }
+	| TOBJECTBEGIN json_property_list TOBJECTEND				{ }
+	| TOBJECTBEGIN json_property_list TSEPARATOR TOBJECTEND		{ }
 	;
 
 input
