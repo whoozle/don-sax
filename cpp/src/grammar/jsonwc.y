@@ -16,8 +16,8 @@
 	std::string *s;
 }
 
-%parse-param { jsonwc::ParserState *parser }
-%lex-param { void* parser }
+%parse-param	{ void * scanner }
+%lex-param		{ void * scanner }
 
 %start input
 

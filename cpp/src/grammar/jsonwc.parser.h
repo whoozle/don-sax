@@ -9,6 +9,7 @@ namespace jsonwc
 	struct ParserState
 	{
 		IInputStream *		Input;
+		void *				Lexer;
 
 		union {
 			IntegerType		IntegerValue;
@@ -32,6 +33,5 @@ namespace jsonwc
 		void OnError(JSONWCLTYPE *loc, const char *msg);
 	};
 
-	inline void _parseError(JSONWCLTYPE *loc, jsonwc::ParserState * state, const char *msg)
-	{ state->OnError(loc, msg); }
+	void _parseError(JSONWCLTYPE *loc, void * scanner, const char *msg);
 }

@@ -67,8 +67,12 @@ namespace jsonwc
 	{
 		using Location = std::pair<int, int>;
 		Location Begin, End;
-		ParserError(Location begin, Location end, const std::string &msg) : Exception(msg), Begin(begin), End(end)
+
+
+		ParserError(Location begin, Location end, const std::string &msg) : Exception(FormatMessage(begin, end, msg)), Begin(begin), End(end)
 		{ }
+
+		static std::string FormatMessage(Location begin, Location end, const std::string &msg);
 	};
 
 	struct IInputStream
