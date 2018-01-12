@@ -7,6 +7,7 @@
 %{
 #	include <jsonwc.h>
 #	include "grammar/jsonwc.parser.h"
+#	include "grammar/jsonwc.lex.h"
 %}
 
 %union {

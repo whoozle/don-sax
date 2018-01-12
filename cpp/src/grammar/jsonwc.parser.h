@@ -3,7 +3,6 @@
 #include <functional>
 
 #include "grammar/jsonwc.tab.h"
-#include "grammar/jsonwc.lex.h"
 
 namespace jsonwc
 {
