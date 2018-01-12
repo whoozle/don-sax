@@ -1,5 +1,4 @@
 #include <jsonwc.h>
-#include "grammar/jsonwc.lex.h"
 #include "grammar/jsonwc.parser.h"
 #include <string>
 
@@ -7,7 +6,7 @@ namespace jsonwc
 {
 	namespace
 	{
-		std::string ToString(yytokentype token)
+		std::string ToString(int token)
 		{
 			switch(token)
 			{

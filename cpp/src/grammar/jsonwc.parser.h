@@ -2,12 +2,14 @@
 #include <sstream>
 #include <functional>
 
+#include "grammar/jsonwc.tab.h"
+#include "grammar/jsonwc.lex.h"
+
 namespace jsonwc
 {
 	struct ParserState
 	{
 		IInputStream *		Input;
-		yyscan_t			Lexer;
 
 		union {
 			IntegerType		IntegerValue;
@@ -24,9 +26,13 @@ namespace jsonwc
 		std::string GetString()
 		{ return StringBuffer.str(); }
 
-		int GetNextToken();
-
 		ParserState(IInputStream *stream);
 		~ParserState();
+
+		void Parse();
+		void OnError(JSONWCLTYPE *loc, const char *msg);
 	};
+
+	inline void _parseError(JSONWCLTYPE *loc, jsonwc::ParserState * state, const char *msg)
+	{ state->OnError(loc, msg); }
 }

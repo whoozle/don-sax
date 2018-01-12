@@ -1,4 +1,5 @@
 %option noyywrap nounput
+%option bison-bridge bison-locations
 %option reentrant
 %option yylineno
 %option 8bit
@@ -10,31 +11,15 @@
 %option perf-report
 
 %top {
+#	define YYSTYPE JSONWCSTYPE
+#	define YYLTYPE JSONWCLTYPE
 
-/* Token type.  */
-#ifndef YYTOKENTYPE
-#define YYTOKENTYPE
-  enum yytokentype
-  {
-    TNULL = 258,
-    TFALSE = 259,
-    TTRUE = 260,
-    TINTEGER = 261,
-    TNUMBER = 262,
-    TSTRING = 263,
-    TIDENTIFIER = 264,
-    TOBJECTBEGIN = 265,
-    TOBJECTEND = 266,
-    TARRAYBEGIN = 267,
-    TARRAYEND = 268,
-    TSEPARATOR = 269,
-    TCOLON = 270,
-  };
-#endif
+#	define jsonwcerror jsonwc::_parseError
 }
 
 %{
 #	include "grammar/jsonwc.parser.h"
+
 #	define PARSER (static_cast<jsonwc::ParserState*>(yyget_extra(yyscanner)))
 
 #	define YY_INPUT(buf,result,max_size) \
